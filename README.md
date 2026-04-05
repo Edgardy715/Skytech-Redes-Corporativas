@@ -47,13 +47,11 @@ El diseño contempla el crecimiento proyectado de la empresa (40% a 5 años) y s
 
 ```text
 📦 Skytech_Redes_Corporativas
- ┣ 📂 configs_base/          # Scripts listos para inyección en equipos PNETLAB
+ ┣ 📂 configs/               # Archivos de configuración de routers, switches, seguridad, VPN y servidores
  ┣ 📂 docs_skytech/          # Identidad corporativa, cotización e informe comercial
  ┣ 📂 documentacion_red/     # Tabla de direccionamiento (VLSM) y justificación de hardware
- ┣ 📂 scripts_automatizacion/# Herramientas de automatización de tareas de red
- ┣ 📂 seguridad_y_vpn/       # Archivos de configuración de IPsec, ACLs y Hardening
- ┣ 📂 servicios_santiago/    # Guías y archivos de servidores (DNS, WEB, RADIUS)
- ┣ 📂 topologia/             # Diagramas lógicos, físicos y archivos .unl exportados
+ ┣ 📂 topologia/             # Diagramas lógicos, físicos y archivos .unl exportados de PNETLAB y Backups
+ ┣ 📜 .gitignore             # Reglas de exclusión de archivos para el control de versiones
  ┗ 📜 README.md              # Este documento
  ---
 ```
