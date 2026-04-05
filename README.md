@@ -6,8 +6,8 @@
 
   ![Estado](https://img.shields.io/badge/Estado-En_Desarrollo-FF8C00?style=for-the-badge)
   ![Emulador](https://img.shields.io/badge/Emulador-PNETLAB-00509E?style=for-the-badge)
-  ![Cisco](https://img.shields.io/badge/Cisco-Routing_&_Switching-1BA0D7?style=for-the-badge&logo=cisco&logoColor=white)
-  ![Python](https://img.shields.io/badge/Automatización-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+  ![Cisco](https://img.shields.io/badge/Cisco-Routing_&_Switching-1BA0D7?style=for-the-badge&logo=cisco&logoColor=blue)
+  ![Python](https://img.shields.io/badge/Automatización-Python-3776AB?style=for-the-badge&logo=python&logoColor=green)
   ![Seguridad](https://img.shields.io/badge/Seguridad-IPsec_VPN-DC382D?style=for-the-badge&logo=wireguard&logoColor=white)
 
 </div>
@@ -24,21 +24,21 @@
 
 ## 🚀 Resumen del Proyecto
 
-[cite_start]Este repositorio contiene la ingeniería de detalle, configuraciones y documentación para el despliegue de una infraestructura de red corporativa unificada para **"Empresa del Grupo"**, una organización con presencia nacional dedicada a las ventas directas y centros de atención al cliente (Call Centers)[cite: 11, 12].
+Este repositorio contiene la ingeniería de detalle, configuraciones y documentación para el despliegue de una infraestructura de red corporativa unificada para **"CECOMPE"**, una organización con presencia nacional dedicada a las ventas directas y centros de atención al cliente (Call Centers).
 
-[cite_start]El diseño contempla el crecimiento proyectado de la empresa (40% a 5 años) [cite: 17] y se divide en tres sedes principales:
+El diseño contempla el crecimiento proyectado de la empresa (40% a 5 años) y se divide en tres sedes principales:
 * 🏢 **Sede Central (Santo Domingo):** Núcleo de alta disponibilidad con redundancia de capa 2 y 3.
-* [cite_start]☁️ **Sede Santiago (Data Center):** Centro de cómputos híbrido alojando servicios críticos (DNS, WEB, DHCP, Radius, Correo)[cite: 36, 38, 39, 40, 41, 42].
-* [cite_start]📍 **Sede La Romana:** Sucursal de acceso optimizado[cite: 43, 44].
+* ☁️ **Sede Santiago (Data Center):** Centro de cómputos híbrido alojando servicios críticos (DNS, WEB, DHCP, Radius, Correo).
+* 📍 **Sede La Romana:** Sucursal de acceso optimizado.
 
 ---
 
 ## 🛠️ Tecnologías y Protocolos Implementados
 
-* [cite_start]**Enrutamiento Dinámico:** OSPF de Multiárea [cite: 24] para convergencia rápida.
-* [cite_start]**Ciberseguridad:** Hardening de dispositivos, ACLs, mitigación de ataques (VLAN, DHCP Snooping, ARP Inspection, STP)[cite: 28, 31].
-* [cite_start]**Conectividad WAN:** Túneles VPN dinámicos con encriptación IPsec entre sedes[cite: 30].
-* [cite_start]**Servicios de Red:** Implementación de servidores Linux/Windows para servicios AAA y de infraestructura[cite: 37].
+* **Enrutamiento Dinámico:** OSPF de Multiárea para convergencia rápida.
+* **Ciberseguridad:** Hardening de dispositivos, ACLs, mitigación de ataques (VLAN, DHCP Snooping, ARP Inspection, STP).
+* **Conectividad WAN:** Túneles VPN dinámicos con encriptación IPsec entre sedes.
+* **Servicios de Red:** Implementación de servidores Linux/Windows para servicios AAA y de infraestructura.
 * **Automatización:** Scripts integrados para el despliegue de configuraciones.
 
 ---
