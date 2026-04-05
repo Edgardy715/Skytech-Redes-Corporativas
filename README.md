@@ -56,6 +56,7 @@
  ┣ 📂 topologia/             # Diagramas lógicos, físicos y archivos .unl exportados
  ┗ 📜 README.md              # Este documento
  ---
+```
 
 ## 👥 Equipo de Ingeniería (Skytech)
 
