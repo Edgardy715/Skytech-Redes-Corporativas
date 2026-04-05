@@ -8,7 +8,7 @@
   ![Emulador](https://img.shields.io/badge/Emulador-PNETLAB-00509E?style=for-the-badge)
   ![Cisco](https://img.shields.io/badge/Cisco-Routing_&_Switching-1BA0D7?style=for-the-badge&logo=cisco&logoColor=blue)
   ![Python](https://img.shields.io/badge/Automatización-Python-3776AB?style=for-the-badge&logo=python&logoColor=green)
-  ![Seguridad](https://img.shields.io/badge/Seguridad-IPsec_VPN-DC382D?style=for-the-badge&logo=wireguard&logoColor=white)
+  ![Seguridad](https://img.shields.io/badge/Seguridad-IPsec_VPN-DC382D?style=for-the-badge&logo=wireguard&logoColor=blue)
 
 </div>
 
