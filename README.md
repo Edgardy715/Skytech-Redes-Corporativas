@@ -2,7 +2,7 @@
   
   # ☁️ SKYTECH | Soluciones de Infraestructura & Nube
   
-  **Proyecto Final de Conmutación y Enrutamiento - ITLA** ]
+  **Proyecto Final de Conmutación y Enrutamiento - ITLA** 
 
   ![Estado](https://img.shields.io/badge/Estado-En_Desarrollo-FF8C00?style=for-the-badge)
   ![Emulador](https://img.shields.io/badge/Emulador-PNETLAB-00509E?style=for-the-badge)
