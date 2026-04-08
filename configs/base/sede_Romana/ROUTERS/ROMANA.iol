@@ -4,6 +4,25 @@ enable
 configure terminal
 hostname LaRomana
 
+no ip domain-lookup
+service password-encryption
+
+! Seguridad y Acceso Remoto (SSH)
+ip domain-name skytech.com
+crypto key generate rsa general-keys modulus 1024
+username admin_skytech privilege 15 secret skytech123
+
+!!!!!! linea de consola
+line con 0
+logging synchronous
+exec-timeout 0 0
+exit
+
+!!!!!!! Linea vty
+line vty 0 4
+login local
+transport input ssh
+exit
 ! Interfaz hacia SW10
 interface e0/1
  no shutdown
