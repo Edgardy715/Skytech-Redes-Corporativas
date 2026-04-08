@@ -1,0 +1,127 @@
+!SW - Santiago
+
+en
+conf t
+hostname SW
+no ip domain-lookup
+service password-encryption
+
+! SSH
+ip domain-name skytech.com
+crypto key generate rsa general-keys modulus 1024
+username admin_skytech privilege 15 secret skytech123
+
+! Consola
+line con 0
+ logging synchronous
+ exec-timeout 0 0
+exit
+
+! VTY
+line vty 0 4
+ login local
+ transport input ssh
+exit
+
+! VTP - Cliente
+vtp domain SKYTECH
+vtp password skytech
+vtp mode client
+
+! Trunk hacia SANTIAGO
+int range e0/1-2
+ description Trunk hacia SANTIAGO
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ no sh
+exit
+
+! e1/1 → DNS-WEB-DHCP Server (VLAN 10)
+int e1/1
+ description DNS-WEB-DHCP Server
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 1
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! e1/2 → Mail Server (VLAN 10)
+int e1/2
+ description Mail Server
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 1
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! e1/3 → FTP-RADIUS Server (VLAN 10)
+int e1/3
+ description FTP-RADIUS Server
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 1
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! e2/0 → Hosts Centro de Datos (VLAN 10)
+int e2/0
+ description Hosts Centro_de_Datos
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 14
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! e2/1 → Hosts Ventas (VLAN 20)
+int e2/1
+ description Hosts Ventas
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 21
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! e2/2 → Hosts Administración (VLAN 30)
+int e2/2
+ description Hosts Administracion
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+ switchport port-security maximum 7
+ switchport port-security violation restrict
+ switchport port-security
+ no sh
+exit
+
+! STP
+spanning-tree mode rapid-pvst
+
+do wr
