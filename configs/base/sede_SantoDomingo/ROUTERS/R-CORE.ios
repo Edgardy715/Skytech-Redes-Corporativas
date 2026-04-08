@@ -1,0 +1,50 @@
+en
+conf t
+hostname R-CORE
+
+no ip domain-lookup
+service password-encryption
+
+! Seguridad y Acceso Remoto (SSH)
+ip domain-name skytech.com
+crypto key generate rsa general-keys modulus 1024
+username admin_skytech privilege 15 secret skytech123
+
+!!!!!! linea de consola
+line con 0
+logging synchronous
+exec-timeout 0 0
+exit
+
+
+!!!!!!! Linea vty
+line vty 0 4
+login local
+transport input ssh
+exit
+
+! ENLACE WAN (Hacia el ISP 
+int e0/2
+description Link_hacia_ISP
+ip address 1.0.0.1 255.255.255.252
+no shutdown
+exit
+
+! Conexión hacia R-SW1
+interface e0/0
+description Link_hacia_R-SW1
+ip address 10.0.2.129 255.255.255.252
+no shutdown
+exit
+
+! Conexión hacia R-SW2
+interface e0/1
+description Link_hacia_R-SW2
+ip address 10.0.2.133 255.255.255.252
+no shutdown
+exit
+
+! Ruta predeterminada hacia la IP del router ISP
+ip route 0.0.0.0 0.0.0.0 1.0.0.2
+
+do wr

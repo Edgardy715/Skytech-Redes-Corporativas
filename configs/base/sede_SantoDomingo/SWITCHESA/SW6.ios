@@ -1,0 +1,39 @@
+en
+conf t
+hostname SW6
+no ip domain-lookup
+service password-encryption
+
+! Seguridad y Acceso Remoto (SSH)
+ip domain-name skytech.com
+crypto key generate rsa general-keys modulus 1024
+username admin_skytech privilege 15 secret skytech123
+
+!!!! Linea de consola
+line con 0
+logging synchronous
+exec-timeout 0 0
+exit
+
+!!!!!! Linea VTY
+line vty 0 4
+login local
+transport input ssh
+exit
+
+
+!!!!!!! modo cliente VTP
+vtp domain SKYTECH
+vtp password skytech
+vtp mode client
+
+
+!!! Troncales hacia Switches R-SW1 y R-SW2
+int range e0/0-1
+description Link hacia Switches R-SW1 y R-SW2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+no sh 
+exit
+
+do wr
