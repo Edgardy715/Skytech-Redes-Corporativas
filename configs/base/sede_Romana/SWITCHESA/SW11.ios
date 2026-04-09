@@ -7,7 +7,6 @@ vtp domain SKYTECH
 vtp mode server
 vtp password skytech
 vtp version 2
-vtp pruning
 
 ! Trunk hacia SW10 (e0/1, e0/2, e0/3 - para EtherChannel luego)
 interface range e0/1 - 3
