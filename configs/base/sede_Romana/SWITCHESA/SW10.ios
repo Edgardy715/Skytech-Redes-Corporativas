@@ -3,12 +3,12 @@ configure terminal
 hostname SW10
 
 ! Crear VLANs
-vlan 2
- name Dept2
-vlan 3
- name Dept1
-vlan 4
- name Dept3
+vlan 50
+ name Atencion_al_Cliente
+vlan 60
+ name Ventas_Locales
+vlan 70
+ name Gerencia_Sucursal
 exit
 
 ! Trunk hacia el Router (e0/0)
