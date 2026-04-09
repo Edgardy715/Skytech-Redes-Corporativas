@@ -2,6 +2,13 @@ enable
 configure terminal
 hostname SW10
 
+! CONFIGURACIÓN VTP
+vtp domain SKYTECH
+vtp mode server
+vtp password skytech
+vtp version 2
+vtp pruning
+
 ! Crear VLANs
 vlan 50
  name Atencion_al_Cliente
