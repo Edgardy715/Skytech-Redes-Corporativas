@@ -1,0 +1,100 @@
+Santiago SW-L3
+
+en
+conf t
+hostname SANTIAGO
+no ip domain-lookup
+service password-encryption
+
+! SSH
+ip domain-name skytech.com
+crypto key generate rsa general-keys modulus 1024
+username admin_skytech privilege 15 secret skytech123
+
+! Consola
+line con 0
+ logging synchronous
+ exec-timeout 0 0
+exit
+
+! VTY
+line vty 0 4
+ login local
+ transport input ssh
+exit
+
+! Routing habilitado
+ip routing
+
+! VTP - Servidor
+vtp domain SKYTECH
+vtp password skytech
+vtp mode server
+
+! VLANs
+vlan 10
+ name Centro_de_Datos
+vlan 20
+ name Ventas
+vlan 30
+ name Administracion
+exit
+
+! SVIs (Gateways)
+int vlan 10
+ description Gateway Centro_de_Datos
+ ip address 10.64.0.33 255.255.255.224
+ no sh
+exit
+
+int vlan 20
+ description Gateway Ventas
+ ip address 10.64.0.1 255.255.255.224
+ no sh
+exit
+
+int vlan 30
+ description Gateway Administracion
+ ip address 10.64.0.65 255.255.255.240
+ no sh
+exit
+
+! Puerto ruteado hacia ISP (e0/0)
+int e0/0
+ description Link hacia ISP
+ no switchport
+ ip address 1.0.0.5 255.255.255.252
+ no sh
+exit
+
+! Ruta default hacia ISP
+ip route 0.0.0.0 0.0.0.0 1.0.0.6
+
+! Trunk hacia SW
+int range e0/1-2
+ description Trunk hacia SW
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ no sh
+exit
+
+! DHCP Snooping
+ip dhcp snooping
+ip dhcp snooping vlan 10,20,30
+no ip dhcp snooping information option
+int range e0/1-2
+ ip dhcp snooping trust
+exit
+
+! DAI
+ip arp inspection vlan 10,20,30
+int range e0/1-2
+ ip arp inspection trust
+exit
+
+! STP - Root primario
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,30 root primary
+
+do wr
