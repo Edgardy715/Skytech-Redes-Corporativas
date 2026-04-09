@@ -2,14 +2,12 @@ enable
 configure terminal
 hostname SW11
 
-! Crear VLANs
-vlan 50
- name Atencion_al_Cliente
-vlan 60
- name Ventas_Locales
-vlan 70
- name Gerencia_Sucursal
-exit
+! CONFIGURACIÓN VTP
+vtp domain SKYTECH
+vtp mode server
+vtp password skytech
+vtp version 2
+vtp pruning
 
 ! Trunk hacia SW10 (e0/1, e0/2, e0/3 - para EtherChannel luego)
 interface range e0/1 - 3
