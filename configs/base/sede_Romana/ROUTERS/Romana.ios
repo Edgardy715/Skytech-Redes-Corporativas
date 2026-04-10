@@ -6,46 +6,45 @@ hostname LaRomana
 
 no ip domain-lookup
 service password-encryption
-
-! Seguridad y Acceso Remoto (SSH)
 ip domain-name skytech.com
 crypto key generate rsa general-keys modulus 1024
 username admin_skytech privilege 15 secret skytech123
 
-!!!!!! linea de consola
 line con 0
-logging synchronous
-exec-timeout 0 0
-exit
-
-!!!!!!! Linea vty
+ logging synchronous
+ exec-timeout 0 0
+ exit
 line vty 0 4
-login local
-transport input ssh
-exit
+ login local
+ transport input ssh
+ exit
+
+
 ! Interfaz hacia SW10
 interface e0/1
+ description Link hacia SW10
  no shutdown
  exit
 
-! Subinterfaces para cada VLAN/Dept
-interface e0/1.2
- encapsulation dot1Q 2
+! Subinterfaces (Corregidas a los IDs de las nuevas VLANs y con DHCP Helper)
+interface e0/1.50
+ description Gateway_Atencion_Cliente
+ encapsulation dot1Q 50
  ip address 10.128.0.1 255.255.255.128
- no shutdown
+ ip helper-address 10.64.0.35
  exit
 
-interface e0/1.3
- encapsulation dot1Q 3
+interface e0/1.60
+ description Gateway_Ventas_Locales
+ encapsulation dot1Q 60
  ip address 10.128.0.129 255.255.255.192
- no shutdown
+ ip helper-address 10.64.0.35
  exit
 
-interface e0/1.4
- encapsulation dot1Q 4
+interface e0/1.70
+ description Gateway_Gerencia_Sucursal
+ encapsulation dot1Q 70
  ip address 10.128.0.193 255.255.255.240
- no shutdown
+ ip helper-address 10.64.0.35
  exit
-
-end
-write memory
+do wr

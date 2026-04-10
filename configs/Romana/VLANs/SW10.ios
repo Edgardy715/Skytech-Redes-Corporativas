@@ -1,0 +1,17 @@
+!!! Configuracion VTP server
+
+en
+conf t
+vtp domain SKYTECH
+vtp password skytech123
+vtp mode server
+
+vlan 50
+name Atencion_al_Cliente
+vlan 60
+name Ventas_Locales
+vlan 70
+name Gerencia_Sucursal
+exit
+
+do wr

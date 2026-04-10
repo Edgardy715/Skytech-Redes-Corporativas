@@ -1,0 +1,8 @@
+!!!!!! Configuracion VTP client
+
+en 
+conf t
+vtp domain SKYTECH
+vtp password skytech123 
+vtp mode client
+do wr

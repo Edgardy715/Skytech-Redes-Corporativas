@@ -1,0 +1,28 @@
+en
+conf t
+! VTP - Cliente (Contraseña corporativa corregida)
+vtp domain SKYTECH
+vtp password cisco
+vtp mode client
+
+! Permitir VLANs en el Troncal
+int range e0/1-2
+ switchport trunk allowed vlan 100,110,120
+exit
+
+! Asignación de VLANs a puertos de acceso
+! VLAN 100 (Centro de Datos / Servidores)
+int range e1/1-3, e2/0
+ switchport access vlan 100
+exit
+
+! VLAN 110 (Ventas)
+int e2/1
+ switchport access vlan 110
+exit
+
+! VLAN 120 (Administracion)
+int e2/2
+ switchport access vlan 120
+exit
+do wr
