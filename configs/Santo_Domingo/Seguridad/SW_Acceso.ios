@@ -1,0 +1,30 @@
+en
+conf t
+
+! 1. PREVENCIÓN DE SERVIDORES DHCP FALSOS Y ENVENENAMIENTO ARP
+ip dhcp snooping
+ip dhcp snooping vlan 10,20,30,40
+no ip dhcp snooping information option
+ip arp inspection vlan 10,20,30,40
+
+! 2. PUERTOS DE CONFIANZA
+int range e0/0-1
+ description Uplinks_Hacia_Multicapas
+ ip dhcp snooping trust
+ ip arp inspection trust
+exit
+
+! 3. SEGURIDAD PARA LOS USUARIOS FINALES (Rate Limiting y Port-Security)
+int range e0/2-3
+ description Puertos_Para_PCs
+ switchport mode access
+ 
+ ! Límite de MACs (2: Una para la PC y otra por si usan Teléfono IP)
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security
+ 
+ ! Evitar ataques de inundación DHCP (Max 15 peticiones por segundo)
+ ip dhcp snooping limit rate 15
+exit
+do wr

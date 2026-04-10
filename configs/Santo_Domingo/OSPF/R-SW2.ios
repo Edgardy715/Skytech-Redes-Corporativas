@@ -1,0 +1,20 @@
+en
+conf t
+
+! 1. Crear el proceso OSPF y ponerle su ID (Solo eso)
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface default
+ no passive-interface e0/0
+ auto-cost reference-bandwidth 10000
+exit
+
+! 2. Activar OSPF DIRECTAMENTE en el enlace físico P2P
+int e0/0
+ ip ospf 1 area 0
+
+! 3. Activar OSPF DIRECTAMENTE en las VLANs
+int range vlan 10, vlan 20, vlan 30, vlan 40
+ ip ospf 1 area 0
+exit
+do wr

@@ -1,0 +1,7 @@
+en
+conf t
+spanning-tree mode rapid-pvst
+
+! Forzar la jerarquía del árbol para las nuevas VLANs
+spanning-tree vlan 100,110,120 root primary
+do wr

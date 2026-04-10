@@ -1,0 +1,20 @@
+en
+conf t
+
+! 1. Crear el proceso OSPF y ponerle su ID (Solo eso)
+router ospf 1
+ router-id 3.3.3.3
+ passive-interface default
+ !!! Solo comunicar las interfaces hacia los RSW
+ no passive-interface e0/0
+ no passive-interface e0/1
+ auto-cost reference-bandwidth 10000
+ default-information originate
+exit
+
+! 2. Activar OSPF DIRECTAMENTE en el enlace físico P2P
+int range e0/0-1
+ ip ospf 1 area 0
+exit
+
+do wr

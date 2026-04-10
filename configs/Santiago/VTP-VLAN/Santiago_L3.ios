@@ -1,0 +1,42 @@
+en
+conf t
+! VTP - Servidor (Contraseña corporativa unificada)
+vtp domain SKYTECH
+vtp password cisco
+vtp mode server
+
+! Creación de VLANs (Corregidas para no chocar con Sto. Dgo)
+vlan 100
+ name Centro_de_Datos
+vlan 110
+ name Ventas
+vlan 120
+ name Administracion
+exit
+
+! SVIs (Gateways) y DHCP Helpers
+int vlan 100
+ description Gateway Centro_de_Datos
+ ip address 10.64.0.33 255.255.255.224
+ no sh
+exit
+
+int vlan 110
+ description Gateway Ventas
+ ip address 10.64.0.1 255.255.255.224
+ ip helper-address 10.64.0.35
+ no sh
+exit
+
+int vlan 120
+ description Gateway Administracion
+ ip address 10.64.0.65 255.255.255.240
+ ip helper-address 10.64.0.35
+ no sh
+exit
+
+! Permitir las VLANs correctas en los Trunks
+int range e0/1-2
+ switchport trunk allowed vlan 100,110,120
+exit
+do wr

@@ -1,0 +1,36 @@
+en
+conf t
+hostname ISP
+
+no ip domain-lookup
+line con 0
+ logging synchronous
+ exec-timeout 0 0
+ exit
+
+! ------------------------------------------------
+! ENLACES WAN (Hacia las sucursales)
+! ------------------------------------------------
+
+! Hacia R-CORE (Santo Domingo)
+interface e0/0
+ description Link_Hacia_Santo_Domingo
+ ip address 1.0.0.2 255.255.255.252
+ no shutdown
+ exit
+
+! Hacia SANTIAGO-L3
+interface e0/1
+ description Link_Hacia_Santiago
+ ip address 1.0.0.6 255.255.255.252
+ no shutdown
+ exit
+
+! Hacia R-LaRomana
+interface e0/2
+ description Link_Hacia_La_Romana
+ ip address 1.0.0.10 255.255.255.252
+ no shutdown
+ exit
+
+do wr

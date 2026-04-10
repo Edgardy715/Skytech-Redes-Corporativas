@@ -1,0 +1,18 @@
+en
+conf t
+! Configurar VTP como Servidor
+vtp domain SKYTECH
+vtp password cisco
+vtp mode server
+
+! Crear las VLANs de la Sede Principal
+vlan 10
+ name Operaciones_CC
+vlan 20
+ name Finanzas
+vlan 30
+ name Recursos_Humanos
+vlan 40
+ name Gerencia_General
+exit
+do wr

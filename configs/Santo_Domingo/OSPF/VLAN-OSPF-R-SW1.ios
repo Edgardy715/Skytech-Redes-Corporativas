@@ -1,0 +1,25 @@
+en
+conf t
+
+! 1. Permitir la nueva VLAN por la tubería gigante
+int port-channel 1
+ switchport trunk allowed vlan add 99
+exit
+
+! 2. Crear la VLAN de tránsito
+vlan 99
+ name TRANSITO_OSPF
+exit
+
+! 3. Configurar la IP para hablar con su compañero (usamos una /30 aislada)
+int vlan 99
+ description Peering_OSPF_RSW2
+ ip address 10.255.255.1 255.255.255.252
+ ip ospf 1 area 0
+ no sh
+exit
+
+router ospf 1
+ no passive-interface vlan 99
+exit
+do wr

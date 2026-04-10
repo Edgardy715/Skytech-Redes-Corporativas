@@ -1,0 +1,7 @@
+en
+conf t
+! Configurar VTP como Cliente
+vtp domain SKYTECH
+vtp password cisco
+vtp mode client
+do wr

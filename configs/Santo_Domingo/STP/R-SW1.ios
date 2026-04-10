@@ -1,0 +1,8 @@
+en
+conf t
+! Activar versión rápida de STP
+spanning-tree mode rapid-pvst
+
+! Forzar a que este switch sea el jefe del árbol
+spanning-tree vlan 10,20,30,40 root primary
+do wr

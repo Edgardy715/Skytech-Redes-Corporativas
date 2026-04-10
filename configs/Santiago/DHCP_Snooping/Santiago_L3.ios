@@ -1,0 +1,12 @@
+en
+conf t
+! Activar globalmente y en las VLANs de Santiago
+ip dhcp snooping
+ip dhcp snooping vlan 100,110,120
+no ip dhcp snooping information option
+
+! Confiar en los enlaces troncales hacia el Switch de Acceso
+int range e0/1-2
+ ip dhcp snooping trust
+exit
+do wr

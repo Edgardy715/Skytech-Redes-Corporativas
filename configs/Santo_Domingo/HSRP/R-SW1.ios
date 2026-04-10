@@ -1,0 +1,44 @@
+!!!!!!!!! HSRP - R-SW1 
+en
+conf t
+
+! VLAN 10 (Operaciones_CC) - Red: 10.0.0.0 /24
+interface vlan 10
+ ip address 10.0.0.2 255.255.255.0
+ ip helper-address 10.64.0.35
+ standby 10 ip 10.0.0.1
+ standby 10 priority 110
+ standby 10 preempt
+ no sh
+exit
+
+! VLAN 20 (Finanzas) - Red: 10.0.2.0 /25
+interface vlan 20
+ ip address 10.0.2.2 255.255.255.128
+ ip helper-address 10.64.0.35
+ standby 20 ip 10.0.2.1
+ standby 20 priority 110
+ standby 20 preempt
+ no sh
+exit
+
+! VLAN 30 (Recursos_Humanos) - Red: 10.0.1.128 /25
+interface vlan 30
+ ip address 10.0.1.130 255.255.255.128
+ ip helper-address 10.64.0.35
+ standby 30 ip 10.0.1.129
+ standby 30 priority 110
+ standby 30 preempt
+ no sh
+exit
+
+! VLAN 40 (Gerencia_General) - Red: 10.0.1.0 /25
+interface vlan 40
+ ip address 10.0.1.2 255.255.255.128
+ ip helper-address 10.64.0.35
+ standby 40 ip 10.0.1.1
+ standby 40 priority 110
+ standby 40 preempt
+ no sh
+exit
+do wr
