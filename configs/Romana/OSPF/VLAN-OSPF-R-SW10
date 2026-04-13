@@ -31,3 +31,4 @@ interface port-channel 1
  switchport mode trunk
  no shutdown
  exit
+do wr
