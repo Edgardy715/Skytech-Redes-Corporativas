@@ -1,0 +1,27 @@
+en
+conf t
+! 1. Permitir las VLANs por el EtherChannel
+int port-channel 1
+ switchport trunk allowed vlan add 50,60,70
+exit
+
+! 2. Configurar IP en cada VLAN
+int vlan 50
+ description Atencion_al_Cliente
+ ip address 10.128.0.1 255.255.255.128
+ no sh
+exit
+
+int vlan 60
+ description Ventas_Locales
+ ip address 10.128.0.129 255.255.255.192
+ no sh
+exit
+
+int vlan 70
+ description Gerencia_Sucursal
+ ip address 10.128.0.193 255.255.255.240
+ no sh
+exit
+
+do wr
