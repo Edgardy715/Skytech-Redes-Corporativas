@@ -5,7 +5,7 @@ conf t
 ! VLAN 10 (Operaciones_CC)
 interface vlan 10
  ip address 10.0.0.3 255.255.255.0
- ip helper-address 10.64.0.35
+ ip helper-address 10.0.2.133
  standby 10 ip 10.0.0.1
  standby 10 preempt
  no sh
@@ -14,7 +14,7 @@ exit
 ! VLAN 20 (Finanzas)
 interface vlan 20
  ip address 10.0.2.3 255.255.255.128
- ip helper-address 10.64.0.35
+ ip helper-address 10.0.2.133
  standby 20 ip 10.0.2.1
  standby 20 preempt
  no sh
@@ -23,7 +23,7 @@ exit
 ! VLAN 30 (Recursos_Humanos)
 interface vlan 30
  ip address 10.0.1.131 255.255.255.128
- ip helper-address 10.64.0.35
+ ip helper-address 10.0.2.133
  standby 30 ip 10.0.1.129
  standby 30 preempt
  no sh
@@ -32,7 +32,7 @@ exit
 ! VLAN 40 (Gerencia_General)
 interface vlan 40
  ip address 10.0.1.3 255.255.255.128
- ip helper-address 10.64.0.35
+ ip helper-address 10.0.2.133
  standby 40 ip 10.0.1.1
  standby 40 preempt
  no sh

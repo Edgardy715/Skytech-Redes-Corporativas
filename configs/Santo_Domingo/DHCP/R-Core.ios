@@ -1,0 +1,39 @@
+en
+conf t
+
+! 1. EXCLUSIONES (Protegiendo Gateways físicos y virtuales)
+! Excluyendo las primeras 10 IPs de cada rango para Gateways y HSRP
+ip dhcp excluded-address 10.0.0.1 10.0.0.10
+ip dhcp excluded-address 10.0.1.1 10.0.1.10
+ip dhcp excluded-address 10.0.1.129 10.0.1.138
+ip dhcp excluded-address 10.0.2.1 10.0.2.10
+
+
+! VLAN 10: Operaciones_CC (/24)
+ip dhcp pool VLAN10_OPERACIONES
+ network 10.0.0.0 255.255.255.0
+ default-router 10.0.0.1
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+! VLAN 40: Gerencia_General (/25)
+ip dhcp pool VLAN40_GERENCIA
+ network 10.0.1.0 255.255.255.128
+ default-router 10.0.1.1
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+! VLAN 30: Recursos_Humanos (/25)
+ip dhcp pool VLAN30_RRHH
+ network 10.0.1.128 255.255.255.128
+ default-router 10.0.1.129
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+! VLAN 20: Finanzas (/25)
+ip dhcp pool VLAN20_FINANZAS
+ network 10.0.2.0 255.255.255.128
+ default-router 10.0.2.1
+ dns-server 10.64.0.35 8.8.8.8
+exit
+do wr

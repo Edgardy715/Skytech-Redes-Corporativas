@@ -31,21 +31,18 @@ interface e0/1.50
  description Gateway_Atencion_Cliente
  encapsulation dot1Q 50
  ip address 10.128.0.1 255.255.255.128
- ip helper-address 10.64.0.35
  exit
 
 interface e0/1.60
  description Gateway_Ventas_Locales
  encapsulation dot1Q 60
  ip address 10.128.0.129 255.255.255.192
- ip helper-address 10.64.0.35
  exit
 
 interface e0/1.70
  description Gateway_Gerencia_Sucursal
  encapsulation dot1Q 70
  ip address 10.128.0.193 255.255.255.240
- ip helper-address 10.64.0.35
  exit
 
 interface e0/0

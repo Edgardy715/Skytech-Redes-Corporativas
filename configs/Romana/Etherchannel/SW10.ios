@@ -1,0 +1,17 @@
+!!!!!!!!!!!! Configuracion de Etherchannel en SW10 
+en
+conf t
+
+interface range e0/1-3
+ description Links_HaciaSW11
+ channel-protocol lacp
+ channel-group 1 mode active
+ no sh
+ exit
+
+interface port-channel 1
+ description SUPER_CABLE_SW10_SW11
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 1,50,60,70
+ exit

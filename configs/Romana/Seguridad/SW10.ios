@@ -1,0 +1,34 @@
+en
+conf t
+
+! 1. Activar Snooping y DAI Global y para las VLANs de LRM
+ip dhcp snooping
+ip dhcp snooping vlan 50,60,70
+ip arp inspection vlan 50,60,70
+
+! 2. Configurar el Uplink hacia el Router ROMANA (El camino al DHCP Real)
+interface e0/0
+ ip dhcp snooping trust
+ ip arp inspection trust
+exit
+
+interface port-channel 1
+ ip dhcp snooping trust
+ ip arp inspection trust
+exit
+
+! 4. Blindar los puertos de Acceso (Usuario Final)
+interface range e1/0-3
+ ! Asegurar que no intenten negociar troncales
+ switchport mode access
+ 
+ ! Encender Port-Security
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ 
+ ! Protección contra ataques de saturación DHCP y ARP
+ ip dhcp snooping limit rate 15
+exit
+do wr

@@ -1,0 +1,41 @@
+!!!!!!!!!!!!!!! Configuracion DHCP de la Romana
+
+en
+conf t
+! Configuración del DHCP
+
+! Excluir del pool las 10 primeras IP para dispositivos
+
+! Excluir para el pool de Atencion al cliente
+ip dhcp excluded-address 10.128.0.1 10.128.0.10
+
+! Excluir para el pool de Ventas locales
+ip dhcp excluded-address 10.128.0.129 10.128.0.140
+
+! Excluir para el pool de Gerencia sucursal (Solo 5 ip reservadas)
+ip dhcp excluded-address 10.128.0.193 10.128.0.198
+
+! Crear los pools de DHCP
+
+! Pool para Atencion al cliente
+ip dhcp pool AtencionCliente
+ network 10.128.0.0 255.255.255.128
+ default-router 10.128.0.1
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+! Pool para Ventas locales
+ip dhcp pool VentasLocales
+ network 10.128.0.128 255.255.255.192
+ default-router 10.128.0.129
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+! Pool para Gerencia sucursal
+ip dhcp pool GerenciaSucursal
+ network 10.128.0.192 255.255.255.240
+ default-router 10.128.0.193
+ dns-server 10.64.0.35 8.8.8.8
+exit
+
+do wr

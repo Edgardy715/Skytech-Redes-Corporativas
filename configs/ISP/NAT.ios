@@ -1,0 +1,35 @@
+!!!!!!! Configurando NAT para acesso a Internet
+
+en
+conf t
+
+! Para los puertos que van a Santo Domingo y La Romana
+int rang e0/0-1
+ip nat inside
+exit
+
+! Para el puerto que va a Santiago
+int e1/0
+ip nat inside
+exit
+
+! Configurar puerto hacia internet
+int e1/3
+ description Enlace a Internet
+ ip addr dhcp
+ ip nat outside
+ no sh
+exit
+
+! Configurar ACL para permitir tráfico desde la red interna hacia Internet
+access-list 1 permit 10.0.0.0 0.255.255.255
+
+! Configurar el overload o PAT
+ip nat inside source list 1 interface e1/3 overload
+
+
+! Compartir la ruta a los demas routers
+router ospf 1
+ default-information originate
+exit
+do wr

@@ -20,14 +20,14 @@ interface e0/0
  exit
 
 ! Hacia SANTIAGO-L3
-interface e0/1
+interface e1/0
  description Link_Hacia_Santiago
  ip address 1.0.0.6 255.255.255.252
  no shutdown
  exit
 
 ! Hacia R-LaRomana
-interface e0/2
+interface e0/1
  description Link_Hacia_La_Romana
  ip address 1.0.0.10 255.255.255.252
  no shutdown

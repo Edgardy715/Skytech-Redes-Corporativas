@@ -1,0 +1,23 @@
+!!!! Habilitar OSPF en las interfaces del ISP
+
+en
+conf t
+
+!! Configuraciones generales de OSPF
+router ospf 1
+ router-id 9.9.9.9
+ auto-cost reference-bandwidth 10000
+ passive-interface default
+ no passive-interface e0/0
+ no passive-interface e0/1
+ no passive-interface e1/0
+exit
+
+!! Configurar OSPF en las interfaces del ISP
+interface range e0/0 - 1
+ ip ospf 1 area 0
+interface e1/0
+ ip ospf 1 area 0
+exit
+
+do wr

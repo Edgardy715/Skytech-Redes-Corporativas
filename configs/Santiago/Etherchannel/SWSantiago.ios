@@ -1,0 +1,15 @@
+!!!! Configurando Etherchannel
+
+en
+conf t
+
+interface range e0/1 - 2
+ description Enlace hacia el SWM de Santiago
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 1,100,110,120
+ channel-group 1 mode on
+ no sh
+exit
+
+do wr

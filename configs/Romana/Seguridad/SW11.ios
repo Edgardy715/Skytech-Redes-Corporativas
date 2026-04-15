@@ -1,0 +1,26 @@
+en
+conf t
+
+! 1. Activar Snooping y DAI Global y en las VLANs
+ip dhcp snooping
+ip dhcp snooping vlan 50,60,70
+ip arp inspection vlan 50,60,70
+
+! 2. El Uplink de confianza es el Port-Channel hacia el SW10
+interface port-channel 1
+ ip dhcp snooping trust
+ ip arp inspection trust
+exit
+
+! 3. Blindar los puertos de Acceso (Usuario Final)
+interface range e1/0-3
+ switchport mode access
+ 
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ 
+ ip dhcp snooping limit rate 15
+exit
+do wr

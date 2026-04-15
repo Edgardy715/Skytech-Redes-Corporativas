@@ -1,0 +1,9 @@
+en
+conf t
+
+! 1. Activar el mismo estándar
+spanning-tree mode rapid-pvst
+
+! 2. Ponerlo como el príncipe heredero (por si el SW10 falla)
+spanning-tree vlan 1,50,60,70 root secondary
+do wr

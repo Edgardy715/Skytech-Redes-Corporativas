@@ -1,0 +1,8 @@
+en
+conf t
+
+spanning-tree mode rapid-pvst
+
+! 2. Forzarlo a ser el Rey de la sucursal
+spanning-tree vlan 1,50,60,70 root primary
+do wr

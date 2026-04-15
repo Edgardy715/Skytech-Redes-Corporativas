@@ -27,6 +27,7 @@ int e0/0
 description Link hacia Router Core
 no switchport
 ip address 10.0.2.130 255.255.255.252
+ip helper-address 10.0.2.129
 no sh
 
 !!!!! Interfaz hacia Switch R-SW2

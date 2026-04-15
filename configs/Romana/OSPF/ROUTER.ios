@@ -1,0 +1,28 @@
+en
+conf t
+! Ruta predeterminada hacia el ISP
+ip route 0.0.0.0 0.0.0.0 1.0.0.10
+! 1. Crear el proceso OSPF y ponerle su ID
+router ospf 1
+ router-id 4.4.4.4
+ passive-interface default
+ no passive-interface e0/0
+ auto-cost reference-bandwidth 10000
+exit
+
+! 2. Activar OSPF directamente en las subinterfaces
+int e0/1.50
+ ip ospf 1 area 0
+
+int e0/1.60
+ ip ospf 1 area 0
+
+int e0/1.70
+ ip ospf 1 area 0
+exit
+
+! Activar OSPF en la interfaz hacia el ISP
+int e0/0
+ ip ospf 1 area 0
+exit
+do wr

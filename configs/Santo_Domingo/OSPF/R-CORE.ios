@@ -8,12 +8,18 @@ router ospf 1
  !!! Solo comunicar las interfaces hacia los RSW
  no passive-interface e0/0
  no passive-interface e0/1
+ no passive-interface e0/2
  auto-cost reference-bandwidth 10000
  default-information originate
 exit
 
 ! 2. Activar OSPF DIRECTAMENTE en el enlace físico P2P
 int range e0/0-1
+ ip ospf 1 area 0
+exit
+
+! Habilitar para el ISP
+int e0/2
  ip ospf 1 area 0
 exit
 
