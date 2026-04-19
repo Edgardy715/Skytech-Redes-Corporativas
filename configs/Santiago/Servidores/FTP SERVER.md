@@ -219,17 +219,8 @@ filebrowser config set \
 
 ```bash
 for user in jvasquez jcarlos eolivero mrobles jsantana ksantiago jortega; do
-  filebrowser users add $user root \
-    --database /etc/filebrowser/filebrowser.db \
-    --perm.admin=false \
-    --perm.create=true \
-    --perm.delete=true \
-    --perm.download=true \
-    --perm.execute=false \
-    --perm.modify=true \
-    --perm.rename=true \
-    --perm.share=true
-  echo "Usuario $user creado en FileBrowser"
+  filebrowser users add $user rootroot1234 --database /etc/filebrowser/filebrowser.db --perm.admin=false --perm.create=true --perm.delete=true --perm.download=true --perm.execute=false --perm.modify=true --perm.rename=true --perm.share=true
+  echo "Usuario $user creado"
 done
 ```
 
