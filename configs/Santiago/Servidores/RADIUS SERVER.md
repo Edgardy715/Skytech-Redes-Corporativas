@@ -448,8 +448,8 @@ EOF
 ## PASO 3 — Importar esquema de BD
 
 ```bash
-sudo mysql -u root -proot daloradius < /var/www/html/daloradius/contrib/db/mysql-daloradius.sql
-sudo mysql -u root -proot radius < /var/www/html/daloradius/contrib/db/fr2-mysql-daloradius.sql 2>/dev/null || true
+sudo mysql -u root -proot daloradius < /var/www/html/daloradius/contrib/db/fr3-mariadb-freeradius.sql
+sudo mysql -u root -proot radius < /var/www/html/daloradius/contrib/db/mariadb-daloradius.sql 2>/dev/null || true
 ```
 
 ---
