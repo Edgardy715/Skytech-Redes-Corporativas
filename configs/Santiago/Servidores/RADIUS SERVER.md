@@ -457,19 +457,19 @@ sudo mysql -u root -proot radius < /var/www/html/daloradius/contrib/db/mariadb-d
 ## PASO 4 — Configurar daloRADIUS
 
 ```bash
-sudo cp /var/www/html/daloradius/library/daloradius.conf.php.sample \
-        /var/www/html/daloradius/library/daloradius.conf.php
+sudo cp /var/www/html/daloradius/app/common/includes/daloradius.conf.php.sample \
+        /var/www/html/daloradius/app/common/includes/daloradius.conf.php
 
-sudo nano /var/www/html/daloradius/library/daloradius.conf.php
+sudo nano /var/www/html/daloradius/app/common/includes/daloradius.conf.php
 ```
 
-Busca y cambia estas líneas:
+Cambia estas líneas:
 
-```php
-$configValues['CONFIG_DB_USER'] = 'daloradius';
-$configValues['CONFIG_DB_PASS'] = 'root';
-$configValues['CONFIG_DB_NAME'] = 'daloradius';
-$configValues['CONFIG_DB_HOST'] = 'localhost';
+```bash
+sudo sed -i "s/\$configValues\['CONFIG_DB_USER'\] = .*/\$configValues['CONFIG_DB_USER'] = 'daloradius';/" /var/www/html/daloradius/app/common/includes/daloradius.conf.php
+sudo sed -i "s/\$configValues\['CONFIG_DB_PASS'\] = .*/\$configValues['CONFIG_DB_PASS'] = 'root';/" /var/www/html/daloradius/app/common/includes/daloradius.conf.php
+sudo sed -i "s/\$configValues\['CONFIG_DB_NAME'\] = .*/\$configValues['CONFIG_DB_NAME'] = 'daloradius';/" /var/www/html/daloradius/app/common/includes/daloradius.conf.php
+sudo sed -i "s/\$configValues\['CONFIG_DB_HOST'\] = .*/\$configValues['CONFIG_DB_HOST'] = 'localhost';/" /var/www/html/daloradius/app/common/includes/daloradius.conf.php
 ```
 
 Guarda (`Ctrl+O`, Enter, `Ctrl+X`).
@@ -481,7 +481,8 @@ Guarda (`Ctrl+O`, Enter, `Ctrl+X`).
 ```bash
 sudo chown -R www-data:www-data /var/www/html/daloradius
 sudo chmod -R 755 /var/www/html/daloradius
-sudo chmod 664 /var/www/html/daloradius/library/daloradius.conf.php
+sudo chmod 664 /var/www/html/daloradius/app/common/includes/daloradius.conf.php
+sudo systemctl restart apache2
 ```
 
 ---
