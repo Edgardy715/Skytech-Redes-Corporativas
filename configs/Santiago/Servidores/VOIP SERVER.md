@@ -307,7 +307,7 @@ http://10.64.0.37
 
 **Primera vez:**
 - **Username:** `admin`
-- **Password:** `Skytech2026`
+- **Password:** `admin`
 - **Email:** `admin@skytech.com.do`
 
 Saltea/cierra los popups del wizard inicial.
