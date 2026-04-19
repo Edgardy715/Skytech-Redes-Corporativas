@@ -361,6 +361,18 @@ El modo debug muestra el error exacto.
 
 ---
 
+### Configurar llave SSH para poder conectarse
+
+```bash
+sudo tee -a /etc/ssh/ssh_config > /dev/null <<'EOF'
+
+Host 10.*
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa
+EOF
+```
+
 ## Equipos donde aplicar la config RADIUS
 
 | Equipo | IP de gestión | Sede |
