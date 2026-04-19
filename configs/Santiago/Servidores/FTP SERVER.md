@@ -232,12 +232,10 @@ filebrowser users ls --database /etc/filebrowser/filebrowser.db
 
 ---
 
-## PASO 12 — Cambiar contraseña del admin por defecto
+## PASO 12 — Crear usuario Admin
 
 ```bash
-filebrowser users update admin \
-  --password SkyTechAdmin2026 \
-  --database /etc/filebrowser/filebrowser.db
+filebrowser users add admin SkyTechAdmin2026 --database /etc/filebrowser/filebrowser.db --perm.admin=true
 ```
 
 ---
