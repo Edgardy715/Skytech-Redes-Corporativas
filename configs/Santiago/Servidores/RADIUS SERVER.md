@@ -185,12 +185,6 @@ Aplicar en **cada router y switch** de la red:
 en
 conf t
 
-! Definir servidor RADIUS
-radius server SKYTECH
- address ipv4 10.64.0.36 auth-port 1812 acct-port 1813
- key skytech123
-exit
-
 ! Habilitar AAA
 aaa new-model
 aaa group server radius SKYTECH-GROUP
@@ -209,6 +203,12 @@ exit
 
 line con 0
  login authentication default
+exit
+
+! Definir servidor RADIUS
+radius server SKYTECH
+ address ipv4 10.64.0.36 auth-port 1812 acct-port 1813
+ key skytech123
 exit
 
 do wr
