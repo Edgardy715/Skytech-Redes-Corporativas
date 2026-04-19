@@ -1,0 +1,14 @@
+!!!!!!!!!!!!!!!!!!!! Configuracion de ACLs para todos los Routers
+
+en
+conf t
+
+! Permite Gerencia SD y el Centro de Datos
+access-list 10 permit 10.0.1.0 0.0.0.127     
+access-list 10 permit 10.64.0.32 0.0.0.31    
+access-list 10 deny any log
+
+line vty 0 4
+ access-class 10 in
+exit
+do wr

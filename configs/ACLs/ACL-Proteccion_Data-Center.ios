@@ -1,0 +1,28 @@
+en
+conf t
+! 1. Creamos la lista de control de acceso extendida
+ip access-list extended PROTECT-DC
+ permit tcp any 10.64.0.32 0.0.0.31 eq 25
+ permit tcp any 10.64.0.32 0.0.0.31 eq 143
+ permit tcp any 10.64.0.32 0.0.0.31 eq 80
+ permit tcp any 10.64.0.32 0.0.0.31 eq 8080
+ permit udp any 10.64.0.32 0.0.0.31 eq 69
+ permit udp any 10.64.0.32 0.0.0.31 eq 1812
+ permit udp any 10.64.0.32 0.0.0.31 eq 5060
+ permit udp any 10.64.0.32 0.0.0.31 range 10000 20000
+ permit tcp any 10.64.0.32 0.0.0.31 eq 22
+ permit tcp any 10.64.0.32 0.0.0.31 range 40000 50000
+ 
+ ! Bloqueamos lo demás hacia los servidores y dejamos un registro
+ deny ip any 10.64.0.32 0.0.0.31 log
+ 
+ ! Permitimos cualquier otro tráfico (hacia internet u otras sucursales)
+ permit ip any any
+exit
+
+! 2. Se la aplicamos a la SVI (Switch Virtual Interface) del Centro de Datos
+interface Vlan 100
+ ip access-group PROTECT-DC out
+exit
+
+do wr
