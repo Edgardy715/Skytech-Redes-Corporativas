@@ -391,6 +391,206 @@ EOF
 | ISP | 1.0.0.2 | Nube |
 
 ---
+# Portal Web RADIUS — daloRADIUS
+
+Guía para montar daloRADIUS como portal web de gestión de FreeRADIUS en Ubuntu 20.04.
+
+**Servidor:** `mail.skytech.com.do` (10.64.0.36) — VLAN 100 Centro de Datos Santiago
+**Acceso:** `http://10.64.0.36/daloradius`
+**Requisitos:** Apache + PHP + MariaDB + FreeRADIUS (ya instalados en este servidor)
+
+---
+
+## ¿Qué es daloRADIUS?
+
+daloRADIUS es un portal web para gestionar FreeRADIUS desde el navegador. Permite:
+
+- Crear, editar y borrar usuarios RADIUS
+- Cambiar contraseñas desde una interfaz gráfica
+- Ver logs de autenticación (quién accedió a qué equipo y cuándo)
+- Ver estadísticas de acceso
+- Gestionar equipos Cisco (NAS) registrados
+
+---
+
+## Requisitos previos
+
+- FreeRADIUS instalado y funcionando (`systemctl status freeradius`)
+- Apache2 + PHP + MariaDB instalados (ya disponibles del servidor Mail)
+- Paquetes: `php-db`, `php-mail`, `php-pear`
+
+---
+
+## PASO 1 — Descargar daloRADIUS
+
+```bash
+cd /tmp
+wget https://github.com/lirantal/daloradius/archive/refs/heads/master.zip
+unzip master.zip
+sudo mv daloradius-master /var/www/html/daloradius
+```
+
+---
+
+## PASO 2 — Crear base de datos para daloRADIUS
+
+```bash
+sudo mysql -u root -proot <<'EOF'
+CREATE DATABASE daloradius;
+CREATE USER 'daloradius'@'localhost' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON daloradius.* TO 'daloradius'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+```
+
+---
+
+## PASO 3 — Importar esquema de BD
+
+```bash
+sudo mysql -u root -proot daloradius < /var/www/html/daloradius/contrib/db/mysql-daloradius.sql
+sudo mysql -u root -proot radius < /var/www/html/daloradius/contrib/db/fr2-mysql-daloradius.sql 2>/dev/null || true
+```
+
+---
+
+## PASO 4 — Configurar daloRADIUS
+
+```bash
+sudo cp /var/www/html/daloradius/library/daloradius.conf.php.sample \
+        /var/www/html/daloradius/library/daloradius.conf.php
+
+sudo nano /var/www/html/daloradius/library/daloradius.conf.php
+```
+
+Busca y cambia estas líneas:
+
+```php
+$configValues['CONFIG_DB_USER'] = 'daloradius';
+$configValues['CONFIG_DB_PASS'] = 'root';
+$configValues['CONFIG_DB_NAME'] = 'daloradius';
+$configValues['CONFIG_DB_HOST'] = 'localhost';
+```
+
+Guarda (`Ctrl+O`, Enter, `Ctrl+X`).
+
+---
+
+## PASO 5 — Permisos
+
+```bash
+sudo chown -R www-data:www-data /var/www/html/daloradius
+sudo chmod -R 755 /var/www/html/daloradius
+sudo chmod 664 /var/www/html/daloradius/library/daloradius.conf.php
+```
+
+---
+
+## PASO 6 — Instalar PHP extensions faltantes
+
+```bash
+sudo apt install -y php-db php-mail php-mail-mime php-pear
+sudo pear install DB
+sudo systemctl restart apache2
+```
+
+---
+
+## PASO 7 — Acceder desde navegador
+
+Desde cualquier PC de la red:
+
+```
+http://10.64.0.36/daloradius
+```
+
+**Login por defecto:**
+- Usuario: `administrator`
+- Password: `radius`
+
+> **Cambiar la contraseña del admin inmediatamente después del primer login.**
+
+---
+
+## Fix SSH desde PCs Linux hacia equipos Cisco
+
+Al hacer SSH a routers/switches Cisco desde una PC Linux moderna, puede aparecer este error:
+
+```
+Unable to negotiate: no matching key exchange method found.
+Their offer: diffie-hellman-group14-sha1
+```
+
+**Solución — agregar config SSH global en la PC:**
+
+```bash
+sudo tee -a /etc/ssh/ssh_config > /dev/null <<'EOF'
+
+Host 10.*
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa
+EOF
+```
+
+O para una conexión específica sin modificar el config:
+
+```bash
+ssh -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa jvasquez@10.64.0.33
+```
+
+---
+
+## Verificación final
+
+```bash
+# Apache corriendo
+sudo systemctl status apache2
+
+# daloRADIUS accesible
+curl -I http://10.64.0.36/daloradius
+
+# Base de datos creada
+sudo mysql -u root -proot -e "show databases;" | grep daloradius
+```
+
+- [ ] Apache `active (running)`
+- [ ] `http://10.64.0.36/daloradius` abre el login
+- [ ] Login con `administrator` / `radius` funciona
+- [ ] Se pueden ver los usuarios RADIUS desde el portal
+- [ ] SSH desde PC Linux a equipos Cisco funciona con el fix
+
+---
+
+## Troubleshooting
+
+### Página en blanco o error PHP
+
+```bash
+sudo tail -20 /var/log/apache2/error.log
+sudo apt install -y php-db php-pear
+sudo pear install DB
+sudo systemctl restart apache2
+```
+
+### Error de base de datos al entrar
+
+Verificar que las credenciales en `daloradius.conf.php` coinciden con las de MariaDB:
+
+```bash
+sudo mysql -u daloradius -proot daloradius -e "show tables;"
+```
+
+Si falla → repasar el Paso 2 (crear usuario y BD).
+
+### Permisos denegados en archivos
+
+```bash
+sudo chown -R www-data:www-data /var/www/html/daloradius
+sudo chmod -R 755 /var/www/html/daloradius
+```
+
+---
 
 ## Autor
 
