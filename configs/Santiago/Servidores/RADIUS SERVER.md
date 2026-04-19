@@ -3,7 +3,8 @@
 Guía completa para montar un servidor FreeRADIUS en Ubuntu 20.04 para autenticación centralizada SSH en routers y switches Cisco.
 
 **Proyecto:** Red Corporativa SkyTech
-**Servidor:** `10.64.0.35` — VLAN 100 Centro de Datos Santiago
+**Servidor:** `mail.skytech.com.do` (10.64.0.36) — VLAN 100 Centro de Datos Santiago
+**Rol del servidor:** Mail (Postfix+Dovecot+Roundcube) + FTP (FileBrowser) + RADIUS (FreeRADIUS)
 **Dominio:** `skytech.com.do`
 **Alcance:** Autenticación SSH centralizada para todos los equipos Cisco de la red
 
@@ -20,7 +21,7 @@ Router/Switch Cisco
         │
         │ RADIUS (puerto 1812) → pregunta: ¿es válido este usuario?
         ▼
-FreeRADIUS Server (10.64.0.35)
+FreeRADIUS Server (10.64.0.36)
         │
         │ Access-Accept / Access-Reject
         ▼
@@ -37,14 +38,16 @@ Router/Switch Cisco → permite o deniega acceso
 
 ## Requisitos previos
 
-- Ubuntu 20.04 con IP estática `10.64.0.35/27`
+- Ubuntu 20.04 con IP estática `10.64.0.36/27`
 - Gateway `10.64.0.33` (SVI VLAN 100 en SANTIAGO-L3)
-- Conectividad desde todos los equipos Cisco hacia `10.64.0.35`
+- Conectividad desde todos los equipos Cisco hacia `10.64.0.36`
 - OSPF funcionando entre sedes (para que routers de otras sedes lleguen al RADIUS)
 
 ---
 
 ## PASO 1 — Configurar red (IP estática)
+
+> **💡 Si ya montaste el servidor Mail en este servidor (10.64.0.36), la red ya está configurada. Skipea este paso.**
 
 ```bash
 sudo tee /etc/netplan/00-installer-config.yaml > /dev/null <<'EOF'
@@ -53,7 +56,7 @@ network:
   ethernets:
     eth0:
       dhcp4: no
-      addresses: [10.64.0.35/27]
+      addresses: [10.64.0.36/27]
       gateway4: 10.64.0.33
       mtu: 1400
       nameservers:
@@ -182,21 +185,23 @@ Aplicar en **cada router y switch** de la red:
 en
 conf t
 
-
+! Definir servidor RADIUS
 radius server SKYTECH
- address ipv4 10.64.0.35 auth-port 1812 acct-port 1813
+ address ipv4 10.64.0.36 auth-port 1812 acct-port 1813
  key skytech123
 exit
 
-
+! Habilitar AAA
 aaa new-model
 aaa group server radius SKYTECH-GROUP
  server name SKYTECH
 exit
 
+! Autenticación: RADIUS primero, local como fallback
 aaa authentication login default group SKYTECH-GROUP local
 aaa authorization exec default group SKYTECH-GROUP local if-authenticated
 
+! Aplicar en líneas VTY y consola
 line vty 0 4
  login authentication default
  transport input ssh
@@ -216,7 +221,7 @@ en
 conf t
 
 aaa new-model
-radius-server host 10.64.0.35 key skytech123
+radius-server host 10.64.0.36 key skytech123
 
 aaa authentication login default group radius local
 aaa authorization exec default group radius local if-authenticated
@@ -289,13 +294,17 @@ Debe entrar directamente en **privilege level 15** (modo enable) sin necesidad d
 ## Verificación final
 
 ```bash
+# Estado del servicio
 sudo systemctl status freeradius
 
+# Puerto escuchando
 sudo ss -tulnp | grep 1812
 
+# Prueba de autenticación
 radtest jvasquez root 127.0.0.1 0 testing123
 radtest eolivero root 127.0.0.1 0 testing123
 
+# Ver logs en tiempo real
 sudo tail -f /var/log/freeradius/radius.log
 ```
 
@@ -319,11 +328,12 @@ Las líneas con atributos deben mostrar `^I` (TAB) al inicio.
 El equipo Cisco no llega al server RADIUS. Verificar:
 
 ```
-ping 10.64.0.35
+! Desde el equipo Cisco
+ping 10.64.0.36
 ```
 
 Si no responde:
-- Verificar que el server tiene IP 10.64.0.35 activa (`ip a`)
+- Verificar que el server tiene IP 10.64.0.36 activa (`ip a`)
 - Verificar que el puerto del server en SW-SANTIAGO está en VLAN 100
 - Verificar que OSPF está propagando rutas hacia 10.64.0.32/27
 
