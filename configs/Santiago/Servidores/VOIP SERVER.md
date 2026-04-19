@@ -307,7 +307,7 @@ http://10.64.0.37
 
 **Primera vez:**
 - **Username:** `admin`
-- **Password:** `admin`
+- **Password:** `Skytech2026`
 - **Email:** `admin@skytech.com.do`
 
 Saltea/cierra los popups del wizard inicial.
@@ -348,6 +348,62 @@ Para cada una:
 Arriba a la derecha verás un botón rojo **"Apply Config"** — click ahí.
 
 **Importante:** Cada vez que cambies algo en FreePBX hay que dar Apply Config para que tome efecto.
+
+---
+
+## PASO 15.5 — ⚠️ FIX CRÍTICO: Habilitar módulo app_macro
+
+> **Este paso es OBLIGATORIO, sino las llamadas se caen al contestar.**
+
+### El problema
+
+Asterisk 18 deprecó `app_macro` y no lo instala por defecto, pero FreePBX 16 todavía lo usa internamente en el dialplan. Sin este módulo, al intentar una llamada aparece este error en los logs:
+
+```
+WARNING pbx.c: No application 'Macro' for extension (from-internal, 1004, 3)
+```
+
+Resultado: **la llamada se conecta pero se cae al contestar**.
+
+### Solución — Compilar y habilitar app_macro
+
+Verificar si el módulo está disponible:
+
+```bash
+ls /usr/lib/asterisk/modules/ | grep -i macro
+```
+
+Si no aparece `app_macro.so`, recompilar Asterisk con el módulo habilitado:
+
+```bash
+cd /usr/src/asterisk-18*/
+sudo make menuselect
+```
+
+En el menú azul que aparece:
+1. Con las flechas, ve a la columna izquierda y selecciona **Applications**
+2. En la columna derecha, baja hasta encontrar **`app_macro`**
+3. Presiona **Enter** o **barra espaciadora** para marcarlo `[*]`
+4. Presiona **Tab** para ir al botón **Save & Exit**
+5. Presiona **Enter**
+
+Recompilar e instalar:
+
+```bash
+sudo make
+sudo make install
+sudo ldconfig
+sudo fwconsole restart
+```
+
+Verificar que el módulo se cargó:
+
+```bash
+ls /usr/lib/asterisk/modules/ | grep macro
+sudo asterisk -rx "module show like macro"
+```
+
+Debe aparecer `app_macro.so` y cargado exitosamente.
 
 ---
 
@@ -404,6 +460,69 @@ sudo asterisk -rx "pjsip show endpoints"
 ---
 
 ## Troubleshooting
+
+### ⚠️ Llamadas se caen al contestar (error Macro)
+
+Síntoma: la extensión suena, el destinatario contesta, y la llamada se corta inmediatamente.
+
+En los logs aparece:
+```
+WARNING pbx.c: No application 'Macro' for extension (from-internal, 1004, 3)
+```
+
+**Causa:** Asterisk 18 no compila `app_macro` por defecto, pero FreePBX 16 aún lo necesita.
+
+**Solución:** Ver Paso 15.5 — compilar e instalar el módulo `app_macro`.
+
+### Error: "Unable to locate the FreePBX BMO Class 'Pm2'"
+
+Falta el módulo PM2 de FreePBX. Requiere npm accesible para el usuario asterisk.
+
+```bash
+# Crear wrapper de npm accesible globalmente
+sudo tee /usr/local/bin/npm > /dev/null <<'EOF'
+#!/bin/bash
+exec /usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js "$@"
+EOF
+sudo chmod 755 /usr/local/bin/npm
+
+# Copiar libs de npm si vienen de NVM
+sudo cp -r /root/.nvm/versions/node/v14.21.3/lib/node_modules /usr/local/lib/
+
+# Instalar PM2
+sudo fwconsole ma downloadinstall pm2
+sudo fwconsole ma enable pm2
+sudo fwconsole reload
+```
+
+### Apply Config falla con error XHR
+
+Asterisk está parado. Reiniciar:
+```bash
+sudo fwconsole stop
+sudo pkill -9 asterisk
+sleep 2
+sudo fwconsole start
+```
+
+### Llamada llega como "Anonymous" al originar desde CLI
+
+Usar el sintax correcto con Local channel:
+```bash
+sudo asterisk -rx "channel originate Local/1003@from-internal extension 1004@from-internal"
+```
+
+### Portal web muestra página default de Apache en vez de FreePBX
+
+Apache sirve `/var/www/html/index.html` en vez de `/var/www/html/admin/`. Crear redirect:
+
+```bash
+sudo rm /var/www/html/index.html
+sudo tee /var/www/html/index.php > /dev/null <<'EOF'
+<?php header("Location: /admin/"); exit; ?>
+EOF
+sudo systemctl restart apache2
+```
 
 ### Asterisk no arranca después de instalar
 
