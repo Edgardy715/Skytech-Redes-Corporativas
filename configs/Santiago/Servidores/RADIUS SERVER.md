@@ -182,23 +182,21 @@ Aplicar en **cada router y switch** de la red:
 en
 conf t
 
-! Definir servidor RADIUS
+
 radius server SKYTECH
  address ipv4 10.64.0.35 auth-port 1812 acct-port 1813
  key skytech123
 exit
 
-! Habilitar AAA
+
 aaa new-model
 aaa group server radius SKYTECH-GROUP
  server name SKYTECH
 exit
 
-! Autenticación: RADIUS primero, local como fallback
 aaa authentication login default group SKYTECH-GROUP local
 aaa authorization exec default group SKYTECH-GROUP local if-authenticated
 
-! Aplicar en líneas VTY y consola
 line vty 0 4
  login authentication default
  transport input ssh
@@ -291,17 +289,13 @@ Debe entrar directamente en **privilege level 15** (modo enable) sin necesidad d
 ## Verificación final
 
 ```bash
-# Estado del servicio
 sudo systemctl status freeradius
 
-# Puerto escuchando
 sudo ss -tulnp | grep 1812
 
-# Prueba de autenticación
 radtest jvasquez root 127.0.0.1 0 testing123
 radtest eolivero root 127.0.0.1 0 testing123
 
-# Ver logs en tiempo real
 sudo tail -f /var/log/freeradius/radius.log
 ```
 
@@ -325,7 +319,6 @@ Las líneas con atributos deben mostrar `^I` (TAB) al inicio.
 El equipo Cisco no llega al server RADIUS. Verificar:
 
 ```
-! Desde el equipo Cisco
 ping 10.64.0.35
 ```
 
