@@ -296,7 +296,7 @@ http://10.64.0.36:8080
 | Michael Robles | Administrador de Servidores | `mrobles` | root |
 | Josue Santana | Ingeniero de Seguridad | `jsantana` | root |
 | Katiuska Santiago | Gestor de Proyectos y QA | `ksantiago` | root |
-| Jan Nelson Ortega | — | `jortega` | root |
+| Jan Nelson Ortega | Gestor de Proyectos y QA | `jortega` | root |
 
 ---
 
