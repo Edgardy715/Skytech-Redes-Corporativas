@@ -1,4 +1,4 @@
-ienvenidos al repositorio oficial de **SkyTech Global**, una plataforma web moderna, interactiva y de alto rendimiento diseñada para una empresa de servicios de infraestructura tecnológica corporativa y ciberseguridad.
+Bienvenidos al repositorio oficial de **SkyTech Global**, una plataforma web moderna, interactiva y de alto rendimiento diseñada para una empresa de servicios de infraestructura tecnológica corporativa y ciberseguridad.
 
 Explora la plataforma y experimenta una interfaz ciber-fluida, animaciones inmersivas y un Centro de Comando simulado en tiempo real.
 
