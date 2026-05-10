@@ -162,7 +162,7 @@ Una infraestructura corporativa unificada de misión crítica para **CECOMPE**, 
 
 ---
 
-## 🚀 Highlights Técnicos
+## Highlights Técnicos
 
 ### 🔥 Lo que está corriendo en producción
 
